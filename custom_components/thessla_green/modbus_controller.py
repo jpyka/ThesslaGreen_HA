@@ -5,6 +5,7 @@ from dataclasses import dataclass, field
 from typing import Dict
 
 from pymodbus.client import AsyncModbusTcpClient
+from pymodbus.framer import FramerType
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -24,7 +25,8 @@ class ControllerException(Exception):
 
 class ThesslaGreenModbusController:
 
-    def __init__(self, host: str, port: int, slave_id: int, update_interval: int = 30):
+    def __init__(self, host: str, port: int, slave_id: int, update_interval: int = 30,
+                 rtu_over_tcp: bool = False):
         self._host = host
         self._port = port
         self._slave = slave_id
@@ -36,6 +38,9 @@ class ThesslaGreenModbusController:
             reconnect_delay=1,
             reconnect_delay_max=300,
             retries=10,
+            # a transparent RS485<->TCP converter carries raw RTU frames; a
+            # Modbus TCP gateway (the default) wraps them in the MBAP header
+            framer=FramerType.RTU if rtu_over_tcp else FramerType.SOCKET,
         )
         self._controller_lock = asyncio.Lock()
 

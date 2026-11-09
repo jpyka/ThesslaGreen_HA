@@ -2,7 +2,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.typing import ConfigType
 
-from .const import DOMAIN, CONF_HOST, CONF_PORT, CONF_SLAVE, CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL
+from .const import DOMAIN, CONF_HOST, CONF_PORT, CONF_SLAVE, CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL, CONF_RTU_OVER_TCP, DEFAULT_RTU_OVER_TCP
 from .modbus_controller import ThesslaGreenModbusController
 from .coordinator import ThesslaGreenCoordinator
 
@@ -24,6 +24,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     port = entry.data[CONF_PORT]
     slave = entry.data[CONF_SLAVE]
     update_interval = entry.data.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
+    rtu_over_tcp = entry.data.get(CONF_RTU_OVER_TCP, DEFAULT_RTU_OVER_TCP)
 
     # Tworzenie kontrolera Modbus
     controller = ThesslaGreenModbusController(
@@ -31,6 +32,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         port=port,
         slave_id=slave,
         update_interval=update_interval,
+        rtu_over_tcp=rtu_over_tcp,
     )
 
     # Tworzenie koordynatora danych

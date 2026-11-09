@@ -45,6 +45,15 @@
 4. Przejdź do `Ustawienia → Integracje → Dodaj integrację`
 5. Wybierz **Thessla Green** i skonfiguruj IP urządzenia, port oraz numer slave
 
+
+### 🔌 Przezroczysty konwerter RS485↔TCP (opcja `rtu_over_tcp`)
+
+Jeśli konwerter nie ma trybu bramki Modbus TCP→RTU (np. Waveshare RS485 TO ETH (B)
+w trybie TCP Server bez opcji Modbus), zaznacz przy dodawaniu integracji pole
+**rtu_over_tcp**: ramki Modbus RTU są wtedy przesyłane surowo przez gniazdo TCP
+(port konwertera, zwykle 502 lub 8899; port szeregowy 9600 8N1, adres slave 10).
+Domyślnie (pole odznaczone) integracja mówi Modbus TCP do bramki.
+
 #### Ręcznie
 
 1. Sklonuj to repozytorium do katalogu `custom_components`:
